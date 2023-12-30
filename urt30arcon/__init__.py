@@ -1,3 +1,7 @@
+"""
+Quake3 Async RCON Client
+"""
+
 from .client import AsyncRconClient
 from .models import (
     Cvar,
