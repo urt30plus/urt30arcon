@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "urt30arcon"
-authors = [{name = "Urt Thirtyplus", email = "urt30plus@mail.fresnostate.edu"}]
+authors = [{name = "Urt Thirtyplus", email = "urt30plus@gmail.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = ["Quake3", "RCON"]
