@@ -124,7 +124,7 @@ class AsyncRconClient:
                 return base_path / map_file.value
         return None
 
-    async def map(self, map_name: str) -> None:  # noqa: A003
+    async def map(self, map_name: str) -> None:
         await self._execute(f"map {map_name}")
 
     async def maps(self) -> list[str]:
