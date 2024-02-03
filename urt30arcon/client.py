@@ -251,7 +251,7 @@ class AsyncRconClient:
             data = await asyncio.wait_for(
                 self._recv_q.get(), timeout=self._recv_timeout
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             return None
         else:
             if data.startswith(_REPLY_PREFIX):
