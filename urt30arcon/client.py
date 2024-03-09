@@ -134,7 +134,7 @@ class AsyncRconClient:
 
     async def maps(self) -> list[str]:
         if not (data := await self._execute(b"fdir *.bsp", retry=True)):
-            logger.error("maps command returned no data")
+            logger.debug("maps command returned no data")
             return []
         lines = data.decode(encoding=_ENCODING).splitlines()
         if (
@@ -168,7 +168,7 @@ class AsyncRconClient:
 
     async def players(self) -> str:
         if not (data := await self._execute(b"players", retry=True)):
-            logger.error("players command returned no data")
+            logger.debug("players command returned no data")
             raise LookupError
         return data.decode(encoding=_ENCODING)
 
