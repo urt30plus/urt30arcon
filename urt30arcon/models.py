@@ -275,6 +275,7 @@ class Game:
                 game.players.append(player)
             elif k == "Map":
                 # back-to-back messages, start over
+                game.players.clear()
                 game.map_name = v
                 in_header = True
 

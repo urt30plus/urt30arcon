@@ -63,7 +63,7 @@ select = [
 ignore = ["ISC001"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**.py" = ["PLR2004", "S101"]
+"tests/**.py" = ["E501", "PLR2004", "S101"]
 
 [tool.ruff.lint.flake8-builtins]
 builtins-ignorelist = ["id", "type"]
