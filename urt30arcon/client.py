@@ -147,6 +147,14 @@ class AsyncRconClient:
             cmd += f" {_duration_to_seconds(duration)}"
         await self._execute(cmd)
 
+    async def next_map(self) -> str | None:
+        if rv := await self.cvarlist("g_next"):
+            if m := rv.get("g_nextmap"):
+                return m
+            if m := rv.get("g_nextcyclemap"):
+                return m
+        return None
+
     async def nuke(self, slot: str) -> None:
         await self._execute(f"nuke {slot}")
 
