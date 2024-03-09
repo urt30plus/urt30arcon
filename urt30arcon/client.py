@@ -114,6 +114,11 @@ class AsyncRconClient:
     async def kill(self, slot: str) -> None:
         await self._execute(f"smite {slot}")
 
+    async def map_name(self) -> str | None:
+        if m := await self.cvar("mapname"):
+            return m.value if m.value else None
+        return None
+
     async def map_restart(self) -> None:
         await self._execute(b"map_restart")
 
