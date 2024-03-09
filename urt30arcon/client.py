@@ -69,7 +69,7 @@ class AsyncRconClient:
         for cv in items[:-3]:
             if item := cv[8:].strip():
                 name, _, value = item.partition(' "')
-                result[name] = value.removesuffix('"')
+                result[name.lower()] = value.removesuffix('"')
         return result
 
     async def cycle_map(self) -> None:
