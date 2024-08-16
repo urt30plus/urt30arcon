@@ -10,12 +10,21 @@
 
 ```python
 import asyncio
+import os
 
 from urt30arcon import AsyncRconClient
 
 
 async def async_main() -> None:
-    client = await AsyncRconClient.create_client(host="127.0.0.1", port=27960, password="sekret")
+    rcon_host = os.getenv("RCON_HOST", "127.0.0.1")
+    rcon_port = int(os.getenv("RCON_PORT", "27960"))
+    rcon_pass = os.environ["RCON_PASS"]
+
+    client = await AsyncRconClient.create_client(
+        host=rcon_host,
+        port=rcon_port,
+        password=rcon_pass,
+    )
 
     await client.bigtext("hello world")
     game = await client.game_info()
