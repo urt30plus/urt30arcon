@@ -4,7 +4,7 @@
 ## Requirements
 
 - Game: [Urban Terror 4.3.4](https://www.urbanterror.info/)
-- Python: 3.11+
+- Python: 3.12+
 
 ## Usage
 

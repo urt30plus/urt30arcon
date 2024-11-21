@@ -13,7 +13,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Intended Audience :: Developers",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = []
 dynamic = ["version", "description"]
 
@@ -33,7 +33,7 @@ strict = true
 warn_unreachable = true
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 extend-exclude = [".*"]
 
 [tool.ruff.format]
