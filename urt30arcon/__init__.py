@@ -14,11 +14,11 @@ from .models import (
 __version__ = "1.2.3.dev"
 
 __all__ = [
-    "__version__",
     "AsyncRconClient",
     "Cvar",
     "Game",
     "GameType",
     "Player",
     "Team",
+    "__version__",
 ]
