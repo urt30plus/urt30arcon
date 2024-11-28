@@ -1,10 +1,9 @@
 import asyncio
 import logging
 import textwrap
-from asyncio.transports import DatagramTransport
 from collections.abc import Coroutine
 from pathlib import Path
-from typing import Any, Self, cast
+from typing import Any, Self
 
 from .models import AuthWhois, Cvar, Game, RconError, ServerStatus
 from .protocol import _Protocol
@@ -24,7 +23,7 @@ class AsyncRconClient:
         host: str,
         port: int,
         password: bytes,
-        transport: DatagramTransport,
+        transport: asyncio.DatagramTransport,
         recv_q: asyncio.Queue[bytes],
         recv_timeout: float,
         buffer_free: asyncio.Event,
@@ -270,7 +269,7 @@ class AsyncRconClient:
             return None
         else:
             if data.startswith(_REPLY_PREFIX):
-                return data[len(_REPLY_PREFIX) :]  # noqa:RUF100,E203
+                return data[len(_REPLY_PREFIX) :]
             logger.warning("reply does not contain expected prefix: %r", data)
             return data
 
@@ -328,4 +327,4 @@ async def _new_transport(
     transport, _ = await loop.create_datagram_endpoint(
         lambda: _Protocol(recv_q, buffer_free), remote_addr=(host, port)
     )
-    return cast(DatagramTransport, transport)  # type: ignore[redundant-cast]
+    return transport
