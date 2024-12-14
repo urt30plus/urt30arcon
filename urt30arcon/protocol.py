@@ -16,7 +16,7 @@ class _Protocol(asyncio.DatagramProtocol):
 
     def connection_made(self, transport: asyncio.BaseTransport) -> None:
         logger.debug(transport)
-        self._transport = cast(asyncio.DatagramTransport, transport)
+        self._transport = cast("asyncio.DatagramTransport", transport)
 
     def connection_lost(self, exc: Exception | None) -> None:
         logger.debug("Connection closed: %r", exc)

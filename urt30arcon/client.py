@@ -115,7 +115,7 @@ class AsyncRconClient:
 
     async def map_name(self) -> str | None:
         if m := await self.cvar("mapname"):
-            return m.value if m.value else None
+            return m.value or None
         return None
 
     async def map_restart(self) -> None:

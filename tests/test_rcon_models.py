@@ -3,7 +3,7 @@ from textwrap import dedent
 from urt30arcon import Game, GameType, Player, Team
 
 
-def test_player_from_string():
+def test_player_from_string() -> None:
     s = """\
     0:foo^7 TEAM:RED KILLS:20 DEATHS:22 ASSISTS:3 PING:98 AUTH:foo IP:127.0.0.1:58537
     """
@@ -15,7 +15,7 @@ def test_player_from_string():
     assert player.assists == 3
 
 
-def test_player_negative_kills():
+def test_player_negative_kills() -> None:
     s = """\
     0:foo^7 TEAM:RED KILLS:-1 DEATHS:2 ASSISTS:0 PING:98 AUTH:foo IP:127.0.0.1:58537
     """
@@ -27,7 +27,7 @@ def test_player_negative_kills():
     assert player.assists == 0
 
 
-def test_game_from_string_ctf():
+def test_game_from_string_ctf() -> None:
     s = """\
     Map: ut4_abbey
     Players: 3
@@ -49,7 +49,7 @@ def test_game_from_string_ctf():
     assert len(game.players) == 3
 
 
-def test_game_from_string_ffa():
+def test_game_from_string_ffa() -> None:
     s = """\
     Map: ut4_docks
     Players: 3
@@ -70,7 +70,7 @@ def test_game_from_string_ffa():
     assert len(game.players) == 3
 
 
-def test_game_from_string_double():
+def test_game_from_string_double() -> None:
     s = """\
     Map: ut4_slumwar
     Players: 10
