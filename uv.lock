@@ -95,7 +95,7 @@ wheels = [
 
 [[package]]
 name = "urt30arcon"
-version = "1.2.3"
+version = "1.2.4.dev0"
 source = { editable = "." }
 
 [package.dev-dependencies]

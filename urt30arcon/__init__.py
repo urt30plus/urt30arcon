@@ -11,7 +11,7 @@ from .models import (
     Team,
 )
 
-__version__ = "1.2.3"
+__version__ = "1.2.4.dev0"
 
 __all__ = [
     "AsyncRconClient",
