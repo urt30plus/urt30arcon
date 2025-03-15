@@ -23,8 +23,8 @@ Source = "https://github.com/urt30plus/urt30arcon"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.14.0",
-    "pytest>=8.3.4",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
 ]
 
 [tool.mypy]
