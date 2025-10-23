@@ -25,6 +25,7 @@ Source = "https://github.com/urt30plus/urt30arcon"
 dev = [
     "mypy>=1.18.2",
     "pytest>=8.4.2",
+    "ty>=0.0.1a24",
 ]
 
 [tool.mypy]
