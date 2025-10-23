@@ -1,9 +1,15 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["uv_build>=0.9.3,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "urt30arcon"
+module-root = ""
 
 [project]
 name = "urt30arcon"
+version = "1.2.4.dev1"
+description = "Quake3 Async RCON Client"
 authors = [{name = "Urt Thirtyplus", email = "urt30plus@gmail.com"}]
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -15,7 +21,6 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = []
-dynamic = ["version", "description"]
 
 [project.urls]
 Home = "https://github.com/urt30plus/urt30arcon"
