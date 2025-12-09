@@ -19,7 +19,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Intended Audience :: Developers",
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = []
 
 [project.urls]
@@ -28,9 +28,9 @@ Source = "https://github.com/urt30plus/urt30arcon"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.18.2",
-    "pytest>=8.4.2",
-    "ty>=0.0.1a24",
+    "mypy>=1.19.0",
+    "pytest>=9.0.2",
+    "ty>=0.0.1a32",
 ]
 
 [tool.mypy]
@@ -39,7 +39,7 @@ strict = true
 warn_unreachable = true
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py313"
 extend-exclude = [".*"]
 
 [tool.ruff.format]
