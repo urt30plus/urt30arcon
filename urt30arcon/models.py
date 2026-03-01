@@ -16,7 +16,7 @@ RE_PLAYER = re.compile(
     r"ASSISTS:(?P<assists>[0-9]+)\s+"
     r"PING:(?P<ping>[0-9]+|CNCT|ZMBI)\s+"
     r"AUTH:(?P<auth>.*)\s+"
-    r"IP:(?P<ip_address>.*):(?P<ip_port>.*)$",
+    r"IP:(?P<ip_address>.*)(:(?P<ip_port>.*))?$",
     re.IGNORECASE,
 )
 _RE_CVAR_PATTERNS = (

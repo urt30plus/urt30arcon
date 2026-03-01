@@ -15,6 +15,15 @@ def test_player_from_string() -> None:
     assert player.assists == 3
 
 
+def test_player_from_string_no_client_port() -> None:
+    s = """\
+    0:foo TEAM:RED KILLS:20 DEATHS:22 ASSISTS:3 PING:98 AUTH:foo IP:127.0.0.1
+    """
+    player = Player.from_string(dedent(s))
+    assert player.name == "foo"
+    assert player.ip_address == "127.0.0.1"
+
+
 def test_player_negative_kills() -> None:
     s = """\
     0:foo^7 TEAM:RED KILLS:-1 DEATHS:2 ASSISTS:0 PING:98 AUTH:foo IP:127.0.0.1:58537
