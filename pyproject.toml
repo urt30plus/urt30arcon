@@ -28,15 +28,9 @@ Source = "https://github.com/urt30plus/urt30arcon"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.19.1",
     "pytest>=9.0.2",
     "ty>=0.0.19",
 ]
-
-[tool.mypy]
-packages = ["urt30arcon"]
-strict = true
-warn_unreachable = true
 
 [tool.ruff]
 target-version = "py313"
