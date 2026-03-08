@@ -1,6 +1,7 @@
 from textwrap import dedent
 
 from urt30arcon import Game, GameType, Player, Team
+from urt30arcon.models import ServerStatus
 
 
 def test_player_from_string() -> None:
@@ -139,3 +140,48 @@ def test_game_from_string_double() -> None:
     game = Game.from_string(dedent(s))
     assert len(game.players) == 10
     assert game.players[1].auth == "m0neysh0t"
+
+
+def test_status_default_server() -> None:
+    s = """\
+    map: ut4_casa
+    num score ping name            lastmsg address               qport rate
+    --- ----- ---- --------------- ------- --------------------- ----- -----
+      4    40  141 theName^7              0 11.22.33.44:27961     38410 32000
+      5    13   48 theName2^7             0 11.22.33.45:27961     38410 32000
+    """
+    status = ServerStatus.from_string(dedent(s))
+    assert len(status.clients) == 2
+    assert status.clients[0].slot == "4"
+    assert status.clients[0].score == 40
+    assert status.clients[0].name == "theName"
+    assert status.clients[0].ip_address == "11.22.33.44"
+    assert status.clients[0].rate == 32000
+    assert status.clients[1].slot == "5"
+    assert status.clients[1].score == 13
+    assert status.clients[1].name == "theName2"
+    assert status.clients[1].ip_address == "11.22.33.45"
+    assert status.clients[1].rate == 32000
+
+
+def test_status_quake3e_server() -> None:
+    s = """\
+    map: ut4_tohunga_b8
+    cl score ping name               address         rate
+    -- ----- ---- ------------------ --------------- -----
+     5    11   32 |30+|hedgehog     ^7 11.22.222.222   32000
+     7     3   40 ^5B^2i^5nge^8&^8^9^3Grab        ^7 11.222.33.222   25000
+    """
+    status = ServerStatus.from_string(dedent(s))
+    assert len(status.clients) == 2
+    assert status.clients[0].slot == "5"
+    assert status.clients[0].score == 11
+    assert status.clients[0].ping == 32
+    assert status.clients[0].name == "|30+|hedgehog"
+    assert status.clients[0].rate == 32000
+    assert status.clients[1].slot == "7"
+    assert status.clients[1].score == 3
+    assert status.clients[1].ping == 40
+    assert status.clients[1].name == "^5B^2i^5nge^8&^8^9^3Grab"
+    assert status.clients[1].ip_address == "11.222.33.222"
+    assert status.clients[1].rate == 25000

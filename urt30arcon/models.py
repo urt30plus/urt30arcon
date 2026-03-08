@@ -45,6 +45,18 @@ _RE_AUTH_WHOIS = re.compile(
     r"^auth: id: (?P<id>\d+) - name: (?P<name>.*?) - login: (?P<login>.*?)"
     r" - notoriety: (?P<notoriety>.*?) - level: (?P<level>[-0-9]+)\s+"
 )
+_RE_STATUS_DEFAULT = re.compile(
+    r"^\s*(?P<slot>\d+)\s+(?P<score>[-]?\d+)\s+(?P<ping>\d+|CNCT|ZMBI)\s+"
+    r"(?P<name>.*?)\s+\d+\s+(?P<ip_address>[0-9.]+)(:\d+)?\s+\d+\s+(?P<rate>\d+)$"
+)
+_RE_STATUS_QUAKE3E = re.compile(
+    r"^\s*(?P<slot>\d+)\s+(?P<score>[-]?\d+)\s+(?P<ping>\d+|CNCT|ZMBI)\s+"
+    r"(?P<name>.*?)\s*\^7\s+(?P<ip_address>[0-9.]+)\s+(?P<rate>\d+)$"
+)
+_PING = {
+    "CNCT": "-1",
+    "ZMBI": "-2",
+}
 
 _GAME_MAP_UNKNOWN = "unknown"
 
@@ -93,27 +105,12 @@ class Cvar(NamedTuple):
 
 
 class ServerStatusClient(NamedTuple):
-    num: str
+    slot: str
     score: int
     ping: int
     name: str
-    lastmsg: str
-    address: str
-    qport: int
+    ip_address: str
     rate: int
-
-    @classmethod
-    def from_string(cls, data: str) -> Self:
-        return cls(
-            num=data[:3].strip(),
-            score=int(data[4:9].strip()),
-            ping=int(data[10:14].strip()),
-            name=data[15:32].strip(),
-            lastmsg=data[33:40].strip(),
-            address=data[41:62].strip(),
-            qport=int(data[63:68].strip()),
-            rate=int(data[69:74].strip()),
-        )
 
 
 class ServerStatus(NamedTuple):
@@ -123,13 +120,41 @@ class ServerStatus(NamedTuple):
     @classmethod
     def from_string(cls, data: str) -> Self:
         """
+        Default (vanilla) output
         map: ut4_casa
         num score ping name            lastmsg address               qport rate
         --- ----- ---- --------------- ------- --------------------- ----- -----
           0     0    0 |30+|money            0 127.0.0.1:27961       58521 32000
+
+        Quake3e output
+        map: ut4_tohunga_b8
+        cl score ping name               address         rate
+        -- ----- ---- ------------------ --------------- -----
+         5    11   32 |30+|hedgehog     ^7 11.22.222.222   32000
         """
         lines = data.splitlines()
-        clients = [ServerStatusClient.from_string(line) for line in lines[3:] if line]
+        if lines[1].startswith("num"):
+            re_status = _RE_STATUS_DEFAULT
+        elif lines[1].startswith("cl"):
+            re_status = _RE_STATUS_QUAKE3E
+        else:
+            raise ValueError(lines)
+        clients = []
+        for line in lines[3:]:
+            if not line:
+                continue
+            if m := re_status.match(line):
+                client = ServerStatusClient(
+                    slot=m["slot"],
+                    score=int(m["score"]),
+                    ping=int(_PING.get(m["ping"], m["ping"])),
+                    name=m["name"].removesuffix("^7"),
+                    ip_address=m["ip_address"],
+                    rate=int(m["rate"]),
+                )
+                clients.append(client)
+            else:
+                raise ValueError(line)
         return cls(map_name=lines[0][5:], clients=clients)
 
 
@@ -177,15 +202,6 @@ class Player:
         0:foo^7 TEAM:RED KILLS:8 DEATHS:5 ASSISTS:0 PING:98 AUTH:foo IP:127.0.0.1:27960
         """
         if m := RE_PLAYER.match(data.strip()):
-            try:
-                ping = int(m["ping"])
-            except ValueError:
-                if m["ping"] == "CNCT":
-                    ping = -1
-                elif m["ping"] == "ZMBI":
-                    ping = -2
-                else:
-                    raise
             return cls(
                 slot=m["slot"],
                 name=m["name"].removesuffix("^7"),
@@ -193,7 +209,7 @@ class Player:
                 kills=int(m["kills"]),
                 deaths=int(m["deaths"]),
                 assists=int(m["assists"]),
-                ping=ping,
+                ping=int(_PING.get(m["ping"], m["ping"])),
                 auth=m["auth"],
                 ip_address=m["ip_address"],
             )
