@@ -3,7 +3,6 @@ import logging
 import textwrap
 from collections.abc import Coroutine
 from pathlib import Path
-from types import TracebackType
 from typing import Any, Self
 
 from .models import AuthWhois, Cvar, Game, RconError, ServerStatus
@@ -289,7 +288,7 @@ class AsyncRconClient:
         self,
         exc_type: type[BaseException] | None,
         exc_val: BaseException | None,
-        exc_tb: TracebackType,
+        exc_tb: Any,
     ) -> bool:
         self.close()
         return False
