@@ -262,9 +262,8 @@ class AsyncRconClient:
 
     async def _recv(self) -> bytes | None:
         try:
-            data = await asyncio.wait_for(
-                self._recv_q.get(), timeout=self._recv_timeout
-            )
+            async with asyncio.timeout(self._recv_timeout):
+                data = await self._recv_q.get()
         except TimeoutError:
             return None
         else:
