@@ -3,7 +3,7 @@ import logging
 import textwrap
 from collections.abc import Coroutine
 from pathlib import Path
-from typing import Any, Self
+from typing import Any
 
 from .models import AuthWhois, Cvar, Game, RconError, ServerStatus
 from .protocol import _Protocol
@@ -18,23 +18,25 @@ _TEAM_NAMES = ("red", "r", "blue", "b", "spectator", "spec", "s")
 
 
 class AsyncRconClient:
-    def __init__(  # noqa:PLR0913
+    def __init__(
         self,
+        *,
         host: str,
         port: int,
-        password: bytes,
-        transport: asyncio.DatagramTransport,
-        recv_q: asyncio.Queue[bytes],
-        recv_timeout: float,
-        buffer_free: asyncio.Event,
+        password: str | bytes,
+        recv_timeout: float = 0.25,
     ) -> None:
         self.host = host
         self.port = port
-        self._password = password
-        self._transport = transport
-        self._recv_q = recv_q
+        self._password = (
+            password
+            if isinstance(password, bytes)
+            else password.encode(encoding=_ENCODING)
+        )
         self._recv_timeout = recv_timeout
-        self._buffer_free = buffer_free
+        self._transport: asyncio.DatagramTransport | None = None
+        self._recv_q = asyncio.Queue[bytes]()
+        self._buffer_free = asyncio.Event()
         self._lock = asyncio.Lock()
         self._tasks: set[asyncio.Task[None]] = set()
 
@@ -53,7 +55,8 @@ class AsyncRconClient:
         await self._send_message(message, kind="")
 
     def close(self) -> None:
-        self._transport.close()
+        if self._transport is not None:
+            self._transport.close()
 
     async def cvar(self, name: str) -> Cvar | None:
         if not (data := await self._execute(name, retry=True)):
@@ -241,10 +244,8 @@ class AsyncRconClient:
         rcon_cmd = b'%srcon "%s" %s\n' % (_CMD_PREFIX, self._password, cmd)
         async with self._lock:
             # handle reconnects in case of errors or lost connections
-            if self._transport.is_closing():
-                self._transport = await _new_transport(
-                    self.host, self.port, self._recv_q, self._buffer_free
-                )
+            if self._transport is None or self._transport.is_closing():
+                self._transport = await self._new_transport()
             self._transport.sendto(rcon_cmd)
             await self._buffer_free.wait()
             data = await self._recv()
@@ -272,27 +273,18 @@ class AsyncRconClient:
             logger.warning("reply does not contain expected prefix: %r", data)
             return data
 
+    async def _new_transport(self) -> asyncio.DatagramTransport:
+        loop = asyncio.get_running_loop()
+        transport, _ = await loop.create_datagram_endpoint(
+            lambda: _Protocol(self._recv_q, self._buffer_free),
+            remote_addr=(self.host, self.port),
+        )
+        return transport
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__qualname__}("
             f"host={self.host}, port={self.port}, recv_timeout={self._recv_timeout})"
-        )
-
-    @classmethod
-    async def create_client(
-        cls, host: str, port: int, password: str, recv_timeout: float = 0.2
-    ) -> Self:
-        recv_q = asyncio.Queue[bytes]()
-        buffer_free = asyncio.Event()
-        transport = await _new_transport(host, port, recv_q, buffer_free)
-        return cls(
-            host,
-            port,
-            password.encode(encoding=_ENCODING),
-            transport,
-            recv_q,
-            recv_timeout,
-            buffer_free,
         )
 
 
@@ -317,13 +309,3 @@ def _wrap_message(message: str, width: int) -> list[str]:
     return [
         x.strip() for line in message.splitlines() for x in textwrap.wrap(line, width)
     ]
-
-
-async def _new_transport(
-    host: str, port: int, recv_q: asyncio.Queue[bytes], buffer_free: asyncio.Event
-) -> asyncio.DatagramTransport:
-    loop = asyncio.get_running_loop()
-    transport, _ = await loop.create_datagram_endpoint(
-        lambda: _Protocol(recv_q, buffer_free), remote_addr=(host, port)
-    )
-    return transport
