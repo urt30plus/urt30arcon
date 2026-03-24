@@ -25,8 +25,8 @@ class _Protocol(asyncio.DatagramProtocol):
         if self._transport:
             self._transport.close()
 
-    def datagram_received(self, data: bytes, _: tuple[str | Any, int]) -> None:  # ty: ignore[invalid-method-override]
-        logger.debug(data)
+    def datagram_received(self, data: bytes, addr: tuple[str | Any, int]) -> None:
+        logger.debug("%s - %r", data, addr)
         self._recv_q.put_nowait(data)
 
     def error_received(self, exc: Exception) -> None:
