@@ -3,7 +3,8 @@ import logging
 import textwrap
 from collections.abc import Coroutine
 from pathlib import Path
-from typing import Any
+from types import TracebackType
+from typing import Any, Self
 
 from .models import AuthWhois, Cvar, Game, RconError, ServerStatus
 from .protocol import _Protocol
@@ -280,6 +281,30 @@ class AsyncRconClient:
             remote_addr=(self.host, self.port),
         )
         return transport
+
+    def __enter__(self) -> Self:
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType,
+    ) -> bool:
+        self.close()
+        return False
+
+    async def __aenter__(self) -> Self:
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType,
+    ) -> bool:
+        self.close()
+        return False
 
     def __repr__(self) -> str:
         return (
