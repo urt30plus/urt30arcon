@@ -282,18 +282,6 @@ class AsyncRconClient:
         )
         return transport
 
-    def __enter__(self) -> Self:
-        return self
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType,
-    ) -> bool:
-        self.close()
-        return False
-
     async def __aenter__(self) -> Self:
         return self
 

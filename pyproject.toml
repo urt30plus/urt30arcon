@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.10.0,<0.11.0"]
+requires = ["uv_build>=0.11.0,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -8,7 +8,7 @@ module-root = ""
 
 [project]
 name = "urt30arcon"
-version = "1.2.5"
+version = "2.0.0"
 description = "Quake3 Async RCON Client"
 authors = [{name = "Urt Thirtyplus", email = "urt30plus@gmail.com"}]
 readme = "README.md"
@@ -16,7 +16,6 @@ license = {file = "LICENSE"}
 keywords = ["Quake3", "RCON"]
 classifiers = [
     "Development Status :: 4 - Beta",
-    "License :: OSI Approved :: Apache Software License",
     "Intended Audience :: Developers",
 ]
 requires-python = ">=3.13"
@@ -29,7 +28,7 @@ Source = "https://github.com/urt30plus/urt30arcon"
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
-    "ty>=0.0.21",
+    "ty>=0.0.24",
 ]
 
 [tool.ruff]
