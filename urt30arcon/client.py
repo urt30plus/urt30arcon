@@ -268,10 +268,7 @@ class AsyncRconClient:
         except TimeoutError:
             return None
         else:
-            if data.startswith(_REPLY_PREFIX):
-                return data[len(_REPLY_PREFIX) :]
-            logger.warning("reply does not contain expected prefix: %r", data)
-            return data
+            return data.removeprefix(_REPLY_PREFIX)
 
     async def _new_transport(self) -> asyncio.DatagramTransport:
         loop = asyncio.get_running_loop()
