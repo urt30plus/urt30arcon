@@ -270,10 +270,13 @@ class AsyncRconClient:
     async def _new_transport(self) -> asyncio.DatagramTransport:
         loop = asyncio.get_running_loop()
         transport, _ = await loop.create_datagram_endpoint(
-            lambda: _Protocol(self._recv_q, self._buffer_free),
+            self._new_protocol,
             remote_addr=(self.host, self.port),
         )
         return transport
+
+    def _new_protocol(self) -> asyncio.DatagramProtocol:
+        return _Protocol(self._recv_q, self._buffer_free)
 
     async def __aenter__(self) -> Self:
         return self
