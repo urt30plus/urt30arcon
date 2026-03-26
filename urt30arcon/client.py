@@ -14,7 +14,7 @@ _CMD_PREFIX = b"\xff" * 4
 _REPLY_PREFIX = _CMD_PREFIX + b"print\n"
 _ENCODING = "latin-1"
 _MAX_MESSAGE_LENGTH = 80
-_TEAM_NAMES = ("red", "r", "blue", "b", "spectator", "spec", "s")
+_TEAM_NAMES = frozenset(["red", "r", "blue", "b", "spectator", "spec", "s"])
 
 
 class AsyncRconClient:
