@@ -156,10 +156,7 @@ class AsyncRconClient:
 
     async def next_map(self) -> str | None:
         if rv := await self.cvarlist("g_next"):
-            if m := rv.get("g_nextmap"):
-                return m
-            if m := rv.get("g_nextcyclemap"):
-                return m
+            return rv.get("g_nextmap") or rv.get("g_nextcyclemap")
         return None
 
     async def nuke(self, slot: str) -> None:
