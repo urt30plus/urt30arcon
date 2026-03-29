@@ -245,8 +245,7 @@ class AsyncRconClient:
                 self._transport = await self._new_transport()
             self._transport.sendto(rcon_cmd)
             await self._buffer_free.wait()
-            data = await self._recv()
-            if data is not None:
+            if data := await self._recv():
                 if data == b"Bad rconpassword.\n":
                     raise RconError("invalid_password")
                 while more_data := await self._recv():
