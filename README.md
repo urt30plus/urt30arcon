@@ -1,4 +1,4 @@
-# Quake3 Async RCON Client
+# Urban Terror Quake3 Async RCON Client
 
 
 ## Requirements
@@ -20,7 +20,7 @@ async def async_main() -> None:
     rcon_port = int(os.getenv("RCON_PORT", "27960"))
     rcon_pass = os.environ["RCON_PASS"]
 
-    client = await AsyncRconClient.create_client(
+    client = AsyncRconClient(
         host=rcon_host,
         port=rcon_port,
         password=rcon_pass,
@@ -33,6 +33,6 @@ async def async_main() -> None:
         await client.slap(slot=first_player.slot)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(async_main())
 ```
