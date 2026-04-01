@@ -2,7 +2,7 @@ import dataclasses
 import enum
 import logging
 import re
-from typing import NamedTuple, Self
+from typing import Self
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +65,8 @@ class RconError(Exception):
     pass
 
 
-class AuthWhois(NamedTuple):
+@dataclasses.dataclass
+class AuthWhois:
     id: str
     name: str
     login: str
@@ -85,7 +86,8 @@ class AuthWhois(NamedTuple):
         raise ValueError(data)
 
 
-class Cvar(NamedTuple):
+@dataclasses.dataclass
+class Cvar:
     name: str
     value: str
     default: str | None = None
@@ -104,7 +106,8 @@ class Cvar(NamedTuple):
         return cls(name=m["cvar"], value=m["value"], default=default)
 
 
-class ServerStatusClient(NamedTuple):
+@dataclasses.dataclass
+class ServerStatusClient:
     slot: str
     score: int
     ping: int
@@ -113,7 +116,8 @@ class ServerStatusClient(NamedTuple):
     rate: int
 
 
-class ServerStatus(NamedTuple):
+@dataclasses.dataclass
+class ServerStatus:
     map_name: str
     clients: list[ServerStatusClient]
 
