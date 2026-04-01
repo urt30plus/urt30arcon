@@ -65,6 +65,27 @@ class RconError(Exception):
     pass
 
 
+class Team(enum.Enum):
+    FREE = "0"
+    RED = "1"
+    BLUE = "2"
+    SPECTATOR = "3"
+
+
+class GameType(enum.Enum):
+    FFA = "0"
+    LMS = "1"
+    TDM = "3"
+    TS = "4"
+    FTL = "5"
+    CAH = "6"
+    CTF = "7"
+    BOMB = "8"
+    JUMP = "9"
+    FREEZETAG = "10"
+    GUNGAME = "11"
+
+
 @dataclasses.dataclass
 class AuthWhois:
     id: str
@@ -160,27 +181,6 @@ class ServerStatus:
             else:
                 raise ValueError(line)
         return cls(map_name=lines[0][5:], clients=clients)
-
-
-class Team(enum.Enum):
-    FREE = "0"
-    RED = "1"
-    BLUE = "2"
-    SPECTATOR = "3"
-
-
-class GameType(enum.Enum):
-    FFA = "0"
-    LMS = "1"
-    TDM = "3"
-    TS = "4"
-    FTL = "5"
-    CAH = "6"
-    CTF = "7"
-    BOMB = "8"
-    JUMP = "9"
-    FREEZETAG = "10"
-    GUNGAME = "11"
 
 
 @dataclasses.dataclass
