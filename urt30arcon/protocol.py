@@ -19,9 +19,9 @@ class _Protocol(asyncio.DatagramProtocol):
         self._transport = cast("asyncio.DatagramTransport", transport)
 
     def connection_lost(self, exc: Exception | None) -> None:
-        logger.debug("Connection closed: %r", exc)
+        logger.warning("Connection closed: %r", exc)
         if size := self._recv_q.qsize():
-            logger.debug("Receive queue has pending items: %s", size)
+            logger.warning("Receive queue has pending items: %s", size)
         if self._transport:
             self._transport.close()
 
