@@ -1,4 +1,5 @@
 import asyncio
+import contextlib
 import logging
 import textwrap
 from collections.abc import Coroutine
@@ -243,6 +244,13 @@ class AsyncRconClient:
             # handle reconnects in case of errors or lost connections
             if self._transport is None or self._transport.is_closing():
                 self._transport = await self._new_transport()
+            if msg_count := self._recv_q.qsize():
+                logger.warning(
+                    "clearing [%s] stale messages from receive queue", msg_count
+                )
+                with contextlib.suppress(asyncio.QueueEmpty):
+                    for _ in range(msg_count):
+                        logger.debug("stale message: %r", self._recv_q.get_nowait())
             self._transport.sendto(rcon_cmd)
             await self._buffer_free.wait()
             if data := await self._recv():
