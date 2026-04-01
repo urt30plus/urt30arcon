@@ -8,7 +8,7 @@ module-root = ""
 
 [project]
 name = "urt30arcon"
-version = "2.0.2"
+version = "2.0.3"
 description = "Quake3 Async RCON Client"
 authors = [{name = "Urt Thirtyplus", email = "urt30plus@gmail.com"}]
 readme = "README.md"
@@ -28,7 +28,7 @@ Source = "https://github.com/urt30plus/urt30arcon"
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
-    "ty>=0.0.26",
+    "ty>=0.0.27",
 ]
 
 [tool.ruff]
