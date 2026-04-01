@@ -1,5 +1,5 @@
 """
-Quake3 Async RCON Client
+Urban Terror Quake3 Async RCON Client
 """
 
 from .client import AsyncRconClient
