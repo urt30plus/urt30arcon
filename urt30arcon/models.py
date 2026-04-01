@@ -151,7 +151,7 @@ class ServerStatus:
         --- ----- ---- --------------- ------- --------------------- ----- -----
           0     0    0 |30+|money            0 127.0.0.1:27961       58521 32000
 
-        Quake3e output
+        FTW/urt-slim output
         map: ut4_tohunga_b8
         cl score ping name               address         rate
         -- ----- ---- ------------------ --------------- -----
