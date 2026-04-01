@@ -46,11 +46,11 @@ _RE_AUTH_WHOIS = re.compile(
     r" - notoriety: (?P<notoriety>.*?) - level: (?P<level>[-0-9]+)\s+"
 )
 _RE_STATUS_DEFAULT = re.compile(
-    r"^\s*(?P<slot>\d+)\s+(?P<score>[-]?\d+)\s+(?P<ping>\d+|CNCT|ZMBI)\s+"
+    r"^\s*(?P<slot>\d+)\s+(?P<score>-?\d+)\s+(?P<ping>\d+|CNCT|ZMBI)\s+"
     r"(?P<name>.*?)\s+\d+\s+(?P<ip_address>[0-9.]+)(:\d+)?\s+\d+\s+(?P<rate>\d+)$"
 )
 _RE_STATUS_QUAKE3E = re.compile(
-    r"^\s*(?P<slot>\d+)\s+(?P<score>[-]?\d+)\s+(?P<ping>\d+|CNCT|ZMBI)\s+"
+    r"^\s*(?P<slot>\d+)\s+(?P<score>-?\d+)\s+(?P<ping>\d+|CNCT|ZMBI)\s+"
     r"(?P<name>.*?)\s*\^7\s+(?P<ip_address>[0-9.]+)\s+(?P<rate>\d+)$"
 )
 _PING = {
