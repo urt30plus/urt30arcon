@@ -72,6 +72,20 @@ class Team(enum.Enum):
     SPECTATOR = "3"
 
 
+TEAM_MAP = {
+    Team.RED.name: Team.RED,
+    "R": Team.RED,
+    "1": Team.RED,
+    Team.BLUE.name: Team.BLUE,
+    "B": Team.BLUE,
+    "2": Team.BLUE,
+    Team.SPECTATOR.name: Team.SPECTATOR,
+    "SPEC": Team.SPECTATOR,
+    "S": Team.SPECTATOR,
+    "3": Team.SPECTATOR,
+}
+
+
 class GameType(enum.Enum):
     FFA = "0"
     LMS = "1"

@@ -6,7 +6,7 @@ from collections.abc import Coroutine
 from pathlib import Path
 from typing import Any, Self
 
-from .models import AuthWhois, Cvar, Game, RconError, ServerStatus
+from .models import TEAM_MAP, AuthWhois, Cvar, Game, RconError, ServerStatus
 from .protocol import _Protocol
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,6 @@ _CMD_PREFIX = b"\xff" * 4
 _REPLY_PREFIX = _CMD_PREFIX + b"print\n"
 _ENCODING = "latin-1"
 _MAX_MESSAGE_LENGTH = 80
-_TEAM_NAMES = frozenset(["red", "r", "blue", "b", "spectator", "spec", "s"])
 
 
 class AsyncRconClient:
@@ -100,9 +99,10 @@ class AsyncRconClient:
         }
 
     async def force(self, slot: str, team: str) -> None:
-        if (target := team.lower()) not in _TEAM_NAMES:
+        if target := TEAM_MAP.get(team.upper()):
+            await self._execute(f"forceteam {slot} {target.name}")
+        else:
             raise ValueError(team)
-        await self._execute(f"forceteam {slot} {target}")
 
     async def game_info(self) -> Game:
         data = await self.players()
