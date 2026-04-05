@@ -8,7 +8,7 @@ module-root = ""
 
 [project]
 name = "urt30arcon"
-version = "2.1.1"
+version = "2.1.2"
 description = "Quake3 Async RCON Client"
 authors = [{name = "Urt Thirtyplus", email = "urt30plus@gmail.com"}]
 readme = "README.md"
