@@ -71,6 +71,23 @@ class Team(enum.Enum):
     BLUE = "2"
     SPECTATOR = "3"
 
+    @classmethod
+    def from_string(cls, value: str) -> "Team":
+        if value in cls:
+            return cls(value)
+        s = value.upper()
+        try:
+            return cls[s]
+        except KeyError:
+            pass
+        if s == "R":
+            return cls.RED
+        if s == "B":
+            return cls.BLUE
+        if s in {"S", "SPEC"}:
+            return cls.SPECTATOR
+        raise ValueError(value)
+
 
 TEAM_MAP = {
     Team.RED.name: Team.RED,

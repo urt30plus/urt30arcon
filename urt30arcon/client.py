@@ -6,7 +6,7 @@ from collections.abc import Coroutine
 from pathlib import Path
 from typing import Any, Self
 
-from .models import TEAM_MAP, AuthWhois, Cvar, Game, RconError, ServerStatus
+from .models import AuthWhois, Cvar, Game, RconError, ServerStatus, Team
 from .protocol import _Protocol
 
 logger = logging.getLogger(__name__)
@@ -99,10 +99,8 @@ class AsyncRconClient:
         }
 
     async def force(self, slot: str, team: str) -> None:
-        if target := TEAM_MAP.get(team.upper()):
-            await self._execute(f"forceteam {slot} {target.name}")
-        else:
-            raise ValueError(team)
+        target = Team.from_string(team)
+        await self._execute(f"forceteam {slot} {target.name}")
 
     async def game_info(self) -> Game:
         data = await self.players()

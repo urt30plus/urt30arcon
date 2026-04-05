@@ -1,5 +1,7 @@
 from textwrap import dedent
 
+import pytest
+
 from urt30arcon import Game, GameType, Player, Team
 from urt30arcon.models import ServerStatus
 
@@ -185,3 +187,36 @@ def test_status_quake3e_server() -> None:
     assert status.clients[1].name == "^5B^2i^5nge^8&^8^9^3Grab"
     assert status.clients[1].ip_address == "11.222.33.222"
     assert status.clients[1].rate == 25000
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("Red", Team.RED),
+        ("r", Team.RED),
+        ("1", Team.RED),
+        ("Blue", Team.BLUE),
+        ("b", Team.BLUE),
+        ("2", Team.BLUE),
+        ("Spectator", Team.SPECTATOR),
+        ("Spec", Team.SPECTATOR),
+        ("s", Team.SPECTATOR),
+        ("3", Team.SPECTATOR),
+    ],
+)
+def test_team_from_string_valid(value: str, expected: Team) -> None:
+    assert Team.from_string(value) == expected
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "Read",
+        "Blu",
+        "Spek",
+        "4",
+    ],
+)
+def test_team_from_string_invalid(value: str) -> None:
+    with pytest.raises(ValueError):  # noqa: PT011
+        Team.from_string(value)
