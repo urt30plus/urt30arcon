@@ -86,7 +86,8 @@ class Team(enum.Enum):
             return cls.BLUE
         if s in {"S", "SPEC"}:
             return cls.SPECTATOR
-        raise ValueError(value)
+        msg = f"Invalid Team value: {value}"
+        raise ValueError(msg)
 
 
 TEAM_MAP = {

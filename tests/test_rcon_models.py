@@ -218,5 +218,5 @@ def test_team_from_string_valid(value: str, expected: Team) -> None:
     ],
 )
 def test_team_from_string_invalid(value: str) -> None:
-    with pytest.raises(ValueError):  # noqa: PT011
+    with pytest.raises(ValueError, match=f"Invalid Team value: {value}"):
         Team.from_string(value)
