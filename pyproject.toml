@@ -27,9 +27,9 @@ Source = "https://github.com/urt30plus/urt30arcon"
 
 [dependency-groups]
 dev = [
-    "prek>=0.4.3",
-    "pytest>=9.0.3",
-    "ty>=0.0.40",
+    "prek>=0.4.5",
+    "pytest>=9.1.1",
+    "ty>=0.0.51",
 ]
 
 [tool.ruff]
