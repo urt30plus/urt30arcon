@@ -14,11 +14,6 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
-      prod-dependencies:
-        dependency-type: production
-        update-types:
-          - patch
-          - minor
   - package-ecosystem: github-actions
     directory: /
     schedule:
